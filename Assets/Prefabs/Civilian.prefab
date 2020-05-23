@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3168251697254876982}
   m_Layer: 0
   m_Name: Civilian
-  m_TagString: Untagged
+  m_TagString: Civilian
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -131,4 +131,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Agent: {fileID: 3168251697254876977}
-  DestinationPoints: {fileID: 0}
+  Trash: {fileID: 6148277768921233392, guid: 08f02c5ae154e0e439392ccfde14fc77, type: 3}
