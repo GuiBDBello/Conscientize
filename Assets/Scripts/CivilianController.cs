@@ -7,24 +7,34 @@ public class CivilianController : MonoBehaviour
     public NavMeshAgent Agent;
     public GameObject Trash;
 
+    private GameObject player;
     private GameObject destinationPoints;
+    private Animator animator;
     private int position;
+    private float timePast;
+    public bool isTalking;
+    private bool isRoaming;
 
     private IEnumerator coroutine;
 
-    private float timePast = 0;
-    
     private void Start()
     {
+        isTalking = false;
+
+        player = GameObject.FindGameObjectWithTag(Tags.Player);
         destinationPoints = GameObject.FindGameObjectWithTag(Tags.Respawn);
+        animator = GetComponent<Animator>();
         position = (int) Random.Range(0, destinationPoints.transform.childCount);
+        timePast = 0;
 
         coroutine = WaitAndInstantiateTrash();
+
+        Agent.SetDestination(destinationPoints.transform.GetChild(position).position);
     }
 
     private void Update()
     {
-        Agent.SetDestination(destinationPoints.transform.GetChild(position).position);
+        
     }
 
     private void FixedUpdate()
@@ -33,6 +43,16 @@ public class CivilianController : MonoBehaviour
         {
             Destroy(this.gameObject, 1f);
         }
+    }
+
+    private void Move()
+    {
+
+    }
+
+    public void Talk(bool isTalking)
+    {
+        Agent.isStopped = isTalking;
     }
 
     private void OnTriggerEnter(Collider other)
