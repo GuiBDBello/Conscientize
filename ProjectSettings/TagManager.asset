@@ -7,6 +7,10 @@ TagManager:
   - Civilian
   - PlayableArea
   - Trash
+  - Trash Bins
+  - Waypoints
+  - Trash Bin
+  - HUD
   layers:
   - Default
   - TransparentFX

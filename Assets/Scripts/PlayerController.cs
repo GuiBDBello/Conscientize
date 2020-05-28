@@ -10,20 +10,31 @@ public class PlayerController : MonoBehaviour
     public float DistanceToTalk;
 
     private Animator animator;
-    private Vector3 movement;
+    private LayerMask layerMask;
+
+    private GameObject civilianSelected;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
+        layerMask = LayerMask.GetMask(Layers.Clickable);
+
+        civilianSelected = null;
     }
 
     private void Update()
     {
-        movement = Move();
-
-        CharacterController.SimpleMove(movement);
-
+        CharacterController.SimpleMove(Move());
         CheckLeftMouseClick();
+
+        if (civilianSelected != null)
+        {
+            if (!IsSelectedCivilianClose(civilianSelected))
+            {
+                //Debug.Log("GET AWAY");
+                StopTalkingToCivilian();
+            }
+        }
     }
 
     void OnDrawGizmosSelected()
@@ -50,12 +61,12 @@ public class PlayerController : MonoBehaviour
     {
         if (movement.magnitude > 0)
         {
-            animator.SetBool("Is Moving", true);
+            animator.SetBool(Animations.IsMoving, true);
             gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, Quaternion.LookRotation(movement), 0.1f);
             // break dance
             //gameObject.transform.Rotate(movement);
         }
-        else animator.SetBool("Is Moving", false);
+        else animator.SetBool(Animations.IsMoving, false);
     }
 
     private void CheckLeftMouseClick()
@@ -65,33 +76,66 @@ public class PlayerController : MonoBehaviour
             Ray ray = MainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Clickable"), QueryTriggerInteraction.UseGlobal))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask, QueryTriggerInteraction.UseGlobal))
             {
                 GameObject gameObjectClicked = hit.collider.gameObject;
 
-                //Debug.Log(distance);
+                //Debug.Log("CLICKED -> " + gameObjectClicked + " - " + Time.deltaTime);
 
-                if (IsCivilianClose(gameObjectClicked, Vector3.Distance(gameObjectClicked.transform.position, this.transform.position)))
+                if (IsSelectedCivilianClose(gameObjectClicked))
                 {
-                    Debug.Log("CIVIL " + Time.deltaTime);
+                    Debug.Log("CIVILIAN " + Time.deltaTime);
                     TalkToCivilian(gameObjectClicked);
                 }
-
-                if (gameObjectClicked.tag.Equals(Tags.Trash))
+                else if (gameObjectClicked.tag.Equals(Tags.Trash))
                 {
-                    Debug.Log("LIXO " + Time.deltaTime);
+                    if (civilianSelected != null)
+                    {
+                        Debug.Log("TRASH " + Time.deltaTime);
+                        TellCivilianToCollectTrash(gameObjectClicked);
+                    }
+                    else Debug.Log("SELECT A CIVILIAN FIRST");
                 }
+                else
+                {
+                    Debug.Log("CIVILIAN IS FAR AWAY");
+                    civilianSelected = null;
+                }
+            }
+            else
+            {
+                StopTalkingToCivilian();
             }
         }
     }
 
-    private bool IsCivilianClose(GameObject civilian, float distance)
+    private bool IsSelectedCivilianClose(GameObject civilian)
     {
+        float distance = Vector3.Distance(civilian.transform.position, this.transform.position);
+
         return civilian.tag.Equals(Tags.Civilian) && distance < DistanceToTalk;
     }
 
     private void TalkToCivilian(GameObject civilian)
     {
-        civilian.GetComponent<CivilianController>().Talk(true);
+        StopTalkingToCivilian();
+
+        civilianSelected = civilian;
+        civilian.GetComponent<CivilianController>().SetStopped(true);
+    }
+
+    private void StopTalkingToCivilian()
+    {
+        if (civilianSelected != null)
+        {
+            civilianSelected.GetComponent<CivilianController>().SetStopped(false);
+            civilianSelected = null;
+        }
+    }
+
+    private void TellCivilianToCollectTrash(GameObject trash)
+    {
+        civilianSelected.GetComponent<CivilianController>().CollectTrash(trash);
+        //StopTalkingToCivilian();
     }
 }
