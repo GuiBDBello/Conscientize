@@ -12,7 +12,7 @@ Game page on itch.io: https://guibdbello.itch.io/conscientize
 
 ### How to Play
 
-- When you see a civilian throwing trash in the street, get closer and click on him with your mouse to start a conversation, then click on the trash he has thrown away to aware him to pick it up and toss it in the trash bin.
+When you see a civilian throwing trash in the street, get closer and click on him with your mouse to start a conversation, then click on the trash he has thrown away to aware him to pick it up and toss it in the trash bin.
 
 #### Controls
 
