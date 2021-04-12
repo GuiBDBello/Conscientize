@@ -12,7 +12,7 @@ Game page on itch.io: https://guibdbello.itch.io/conscientize
 
 ### How to Play
 
-- When you see a civilian throwing trash in the street, go near him and click him with your mouse to talk to him, then click at the trash he has thrown to aware him to pick it up and throw it in the trash bin.
+- When you see a civilian throwing trash in the street, get closer and click on him with your mouse to start a conversation, then click on the trash he has thrown away to aware him to pick it up and toss it in the trash bin.
 
 #### Controls
 
@@ -27,7 +27,7 @@ Save the environment by raising the awareness of citizens from a quiet, colorful
 
 This game was made for the game jam [**Step Up Your Dev Jam**](https://itch.io/jam/step-up-your-dev-jam) which took place between May 18th and May 27th of 2020.
 
-Theme: **Ajudar** (EN: **To aid**).
+Theme: **Ajudar** (English: **To aid**).
 
 ## Setup
 
